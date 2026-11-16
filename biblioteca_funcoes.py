@@ -7,21 +7,13 @@ import emoji
 ARQUIVO_DADOS = "acervo.json"
 
 
-# Função que limpa a tela do terminal.
 def limparTela():
     os.system('cls')
 
-
-# Função que permite o usuário digitar ENTER para o programa continuar.
 def enterParaContinuar():
     input("\nDigite ENTER para continuar...")
 
 
-# Função que gera e retorna o código do livro (FUNÇÃO OBRIGATÓRIA - fatiamento de string).
-# Regra escolhida pela equipe: 3 primeiras letras do título + 3 primeiras letras do
-# ÚLTIMO NOME digitado pelo usuário no campo autor + 2 últimos dígitos do ano.
-# Se o autor tiver só um nome (ex: "Homero"), a última palavra é o próprio nome,
-# então a regra continua funcionando sem tratamento especial.
 def geradorCodigo(titulo, autor, ano_lancamento):
     titulo_limpo = titulo.replace(" ", "").upper()
     palavras_autor = autor.strip().split()
@@ -30,8 +22,6 @@ def geradorCodigo(titulo, autor, ano_lancamento):
     codigo = titulo_limpo[:3] + sobrenome[:3] + str(ano_lancamento)[-2:]
     return codigo
 
-
-# Função que gera uma mensagem/emoji específico para cada gênero do livro.
 def geraMensagemGenero(genero):
     opcao = genero[:3].upper()
     match opcao:
@@ -53,7 +43,6 @@ def geraMensagemGenero(genero):
     return mensagem_genero
 
 
-# Função que pede e verifica se o ano digitado é válido.
 def pedeEVerificaAnoValido():
     while True:
         try:
@@ -62,8 +51,6 @@ def pedeEVerificaAnoValido():
         except ValueError:
             print("Só aceitamos números.")
 
-
-# Função que cadastra todas as informações de um livro.
 def cadastrarLivro(acervo):
     limparTela()
 
@@ -92,8 +79,6 @@ def cadastrarLivro(acervo):
     print(f"\nLivro cadastrado com sucesso! Código gerado: [bold red]{codigo}[/bold red]")
     enterParaContinuar()
 
-
-# Função que exibe o menu de opções para o usuário.
 def exibirMenu():
     limparTela()
     print("=" * 40)
@@ -109,16 +94,12 @@ Escolha uma opção para continuar:
     """)
     print("=" * 40)
 
-
-# Função que busca um livro pelo código (FUNÇÃO OBRIGATÓRIA - retorna o livro ou None).
 def buscarLivroPorCodigo(acervo, codigo):
     for i in range(len(acervo)):
         if acervo[i]["codigo"] == codigo:
             return acervo[i]
     return None
 
-
-# Função que imprime a ficha completa de um livro.
 def exibirFichaLivro(livro):
     limparTela()
     print("[gray]=[/gray]" * 30)
@@ -144,8 +125,6 @@ STATUS: {status_texto}""")
     print("[gray]=[/gray]" * 30)
     enterParaContinuar()
 
-
-# Função que busca um livro pelo código digitado e exibe sua ficha.
 def buscarEExibirLivro(acervo):
     limparTela()
     codigo = input("DIGITE O CÓDIGO DO LIVRO: ").strip().upper()
@@ -153,7 +132,6 @@ def buscarEExibirLivro(acervo):
     exibirFichaLivro(livro)
 
 
-# Função que registra o empréstimo ou a devolução de um livro.
 def registrarEmprestimoDevolucao(acervo):
     limparTela()
     codigo = input("DIGITE O CÓDIGO DO LIVRO: ").strip().upper()
@@ -185,7 +163,6 @@ def registrarEmprestimoDevolucao(acervo):
     enterParaContinuar()
 
 
-# Função que calcula as estatísticas do acervo (FUNÇÃO OBRIGATÓRIA - retorna um dicionário).
 def calcularEstatisticas(acervo):
     total = len(acervo)
 
@@ -222,8 +199,6 @@ def calcularEstatisticas(acervo):
         elif por_genero[genero] == maior_contagem:
             empatados.append(genero)
 
-    # Ponto de decisão da equipe: em caso de empate no gênero mais comum,
-    # todos os gêneros empatados são retornados numa lista.
     if len(empatados) == 1:
         genero_mais_comum = empatados[0]
     else:
@@ -236,7 +211,6 @@ def calcularEstatisticas(acervo):
             "genero_mais_comum": genero_mais_comum}
 
 
-# Função que exibe as estatísticas do acervo na tela.
 def exibirEstatisticas(acervo):
     limparTela()
     print("[gray]=[/gray]" * 30)
@@ -265,8 +239,6 @@ def exibirEstatisticas(acervo):
     print("[gray]=[/gray]" * 30)
     enterParaContinuar()
 
-
-# Função que carrega o arquivo .json do acervo (FUNÇÃO OBRIGATÓRIA - retorna a lista).
 def carregarAcervo():
     try:
         with open(ARQUIVO_DADOS, "r", encoding="utf-8") as arquivo:
@@ -277,7 +249,7 @@ def carregarAcervo():
         return []
 
 
-# Função que salva o acervo no arquivo .json (FUNÇÃO OBRIGATÓRIA - retorna True/False).
+# Função que salva o acervo no arquivo .json
 def salvarAcervo(acervo):
     try:
         with open(ARQUIVO_DADOS, "w", encoding="utf-8") as arquivo:
